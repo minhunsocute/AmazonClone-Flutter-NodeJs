@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const authRouter = require('./routes/auth');
 //import '.features/auth/screens/auth_screen'
 //INIT
-const PORT = 3000;
+const PORT = 2011;
 const app = express();
 const DB = "mongodb+srv://minhhung:20112002@cluster0.bwnjofl.mongodb.net/?retryWrites=true&w=majority";
 //middleware

@@ -26,7 +26,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -36,12 +36,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _nameController.dispose();
-    super.dispose();
-  }
+  // void dispose() {
+  //   _emailController.dispose();
+  //   _passwordController.dispose();
+  //   _nameController.dispose();
+  //   super.dispose();
+  // }
 
   void signUpUser() {
     authService.signUpUser(
@@ -50,6 +50,20 @@ class _AuthScreenState extends State<AuthScreen> {
       password: _passwordController.text,
       name: _nameController.text,
     );
+  }
+
+  void signInUser() {
+    setState(() {
+      isLoading = true;
+    });
+    authService.signInUser(
+      context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -135,10 +149,16 @@ class _AuthScreenState extends State<AuthScreen> {
                               controller: _passwordController,
                               hintText: 'Password'),
                           const SizedBox(height: 10),
-                          CustomButton(
-                            text: 'Sign In',
-                            onTap: () {},
-                          )
+                          (isLoading)
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                      color: Colors.blue))
+                              : CustomButton(
+                                  text: 'Sign In',
+                                  onTap: () {
+                                    signInUser();
+                                  },
+                                )
                         ],
                       ),
                     ),
