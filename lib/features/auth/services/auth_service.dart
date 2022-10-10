@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:amazon_clone/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/utils.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
@@ -39,7 +40,7 @@ class AuthService {
           // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
             context,
-            HomeScreen.routeName,
+            BottomBar.routeName,
             (route) => false,
           );
         },
@@ -84,7 +85,7 @@ class AuthService {
   }
 
   //get data user from
-  void getUserData(BuildContext context) async {
+  Future<bool> getUserData(BuildContext context) async {
     try {
       print('Get user data');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -112,10 +113,12 @@ class AuthService {
         var userProvider = Provider.of<UserProvider>(context, listen: false);
         userProvider.setUser(userRes.body);
         print(userRes.body);
+        return false;
         //get user data
       }
     } catch (e) {
       print("err:" + e.toString());
     }
+    return false;
   }
 }

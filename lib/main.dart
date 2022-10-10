@@ -1,8 +1,10 @@
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/features/auth/screens/loading_screen.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:amazon_clone/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'common/widgets/bottom_bar.dart';
 import 'features/auth/screens/auth_screen.dart';
 import 'features/auth/services/auth_service.dart';
 import 'providers/user_provider.dart';
@@ -24,11 +26,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AuthService authService = AuthService();
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
+
     authService.getUserData(context);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   // This widget is the root of your application.
@@ -48,9 +54,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-          ? const HomeScreen()
-          : AuthScreen(),
+      home: isLoading
+          ? const LoadingScreen()
+          : Provider.of<UserProvider>(context).user.token.isNotEmpty
+              ? BottomBar()
+              : AuthScreen(),
     );
   }
 }
