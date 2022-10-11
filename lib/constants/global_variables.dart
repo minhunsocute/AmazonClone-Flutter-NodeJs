@@ -49,4 +49,19 @@ class GlobalVariables {
       'image': 'assets/images/fashion.jpeg',
     },
   ];
+
+  static const List<Map<String, dynamic>> listDeal = [
+    {
+      'image':
+          'https://upload.wikimedia.org/wikipedia/commons/e/e8/Imac_16-9.png',
+      'name': 'Imac 16-9 inch',
+      'price': 33.3,
+    },
+    {
+      'image':
+          'https://cdn.tgdd.vn/Products/Images/44/285958/apple-macbook-pro-m2-2022-16gb-256gb-thumb-600x600.jpg',
+      'name': 'Apple Macbook Pro(13.3-inch, M1 Chip with 8)',
+      'price': 99.3,
+    }
+  ];
 }

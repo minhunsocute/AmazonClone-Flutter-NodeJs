@@ -38,11 +38,11 @@ class AuthService {
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
           // ignore: use_build_context_synchronously
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            BottomBar.routeName,
-            (route) => false,
-          );
+          // Navigator.pushNamedAndRemoveUntil(
+          //   context,
+          //   BottomBar.routeName,
+          //   (route) => false,
+          // );
         },
       );
     } catch (err) {
