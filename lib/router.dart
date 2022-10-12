@@ -1,3 +1,5 @@
+import 'package:amazon_clone/features/admin/screens/add_product.dart';
+import 'package:amazon_clone/features/admin/screens/admin_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'common/widgets/bottom_bar.dart';
@@ -20,6 +22,16 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => BottomBar(),
+      );
+    case AdminScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => AdminScreen(),
+      );
+    case AddProduct.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => AddProduct(),
       );
     default:
       return MaterialPageRoute(
