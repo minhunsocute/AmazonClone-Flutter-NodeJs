@@ -11,6 +11,7 @@ import '../../../constants/error_handling.dart';
 import '../../../models/product.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/rating.dart';
 import '../../../providers/user_provider.dart';
 
 class AdminService {
@@ -84,24 +85,11 @@ class AdminService {
           onSuccess: () {
             for (int i = 0; i < jsonDecode(res.body).length; i++) {
               Map<String, dynamic> map = jsonDecode(res.body)[i];
-              producList.add(
-                Product.fromMap({
-                  'name': map['name'],
-                  'description': map['description'] ?? '',
-                  'quantity': map['quantity']?.toDouble() ?? 0.0,
-                  'images': List<String>.from(map['images']),
-                  'category': map['category'] ?? '',
-                  'price': map['price']?.toDouble() ?? 0.0,
-                  'id': map['_id'],
-                  // 'rating': map['ratings'] != null
-                  //     ? List<Rating>.from(
-                  //         map['ratings']?.map(
-                  //           (x) => Rating.fromMap(x),
-                  //         ),
-                  //       )
-                  //     : null,
-                }),
-              );
+              producList.add(Product.fromJson(
+                jsonEncode(
+                  jsonDecode(res.body)[i],
+                ),
+              ));
             }
           });
     } catch (e) {

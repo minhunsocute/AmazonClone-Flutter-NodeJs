@@ -3,6 +3,7 @@ import 'package:amazon_clone/features/admin/screens/add_product.dart';
 import 'package:amazon_clone/features/auth/services/admin_services.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/widgets/view_item.dart';
 import '../../../models/product.dart';
 
 class PostScreen extends StatefulWidget {
@@ -85,51 +86,36 @@ class _PostScreenState extends State<PostScreen> {
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            body: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: GridView.builder(
-                itemCount: products!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                itemBuilder: (context, index) {
-                  final productData = products![index];
-                  return Column(
-                    children: [
-                      Container(
-                        height: 140,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 1, color: Colors.black),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              productData.images[0],
-                            ),
+            body: Column(
+              children: [
+                for (int i = 0; i < products!.length; i++)
+                  (i % 2 == 0)
+                      ? SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ViewItem(
+                                  product: products![i],
+                                  delete: () => deleteProduct(products![i], i),
+                                ),
+                              ),
+                              (i + 1 < products!.length)
+                                  ? Expanded(
+                                      child: ViewItem(
+                                        product: products![i + 1],
+                                        delete: () => deleteProduct(
+                                            products![i + 1], i + 1),
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: Container(),
+                                    )
+                            ],
                           ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              productData.name,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () => deleteProduct(productData, index),
-                            icon: const Icon(
-                              Icons.delete_outline,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
+                        )
+                      : Container(),
+              ],
             ),
           );
   }

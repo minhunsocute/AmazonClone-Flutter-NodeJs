@@ -1,4 +1,7 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
+import 'package:amazon_clone/features/home/screens/category_detail_screen.dart';
+import 'package:amazon_clone/features/home/widgets/deal_of_day.dart';
+import 'package:amazon_clone/features/search/screens/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -13,6 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+    final TextEditingController _searchController = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -36,7 +40,9 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(7),
                       elevation: 1,
                       child: TextFormField(
-                        // onFieldSubmitted: navigateToSearchScreen,
+                        onFieldSubmitted: (stringQuery) => Navigator.pushNamed(
+                            context, SearchScreen.routeName,
+                            arguments: stringQuery),
                         decoration: InputDecoration(
                           prefixIcon: InkWell(
                             onTap: () {},
@@ -139,7 +145,10 @@ class HomeScreen extends StatelessWidget {
               itemExtent: 75,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () {},
+                  onTap: () => Navigator.pushNamed(
+                      context, CategoryDetailScreen.routeName,
+                      arguments: GlobalVariables.categoryImages[index]
+                          ['title']),
                   child: Column(
                     children: [
                       Container(
@@ -209,76 +218,32 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          Column(
-            children: [
-              ...GlobalVariables.listDeal.map(
-                (e) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 300,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(
-                        e['image'],
-                        // fit: BoxFit.fill,
-                        height: 200,
-                        width: double.infinity,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '\$${e['price']}',
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 29, 201, 192),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                child: Text(
-                                  e['name'],
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Color.fromARGB(255, 28, 201, 192),
-                                ),
-                                child: const Icon(
-                                  Icons.shopping_bag,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const SizedBox(height: 20),
+          const DealOfDay(),
+          const SizedBox(height: 40),
+          // Column(
+          //   children: [
+          //     ...GlobalVariables.listDeal.map(
+          //       (e) => Container(
+          //         margin: const EdgeInsets.symmetric(horizontal: 10),
+          //         height: 300,
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Image.network(
+          //               e['image'],
+          //               // fit: BoxFit.fill,
+          //               height: 200,
+          //               width: double.infinity,
+          //             ),
+          //             const SizedBox(height: 10),
+
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
