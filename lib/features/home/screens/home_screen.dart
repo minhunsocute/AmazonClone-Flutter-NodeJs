@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
+    final user = context.watch<UserProvider>().user;
     final TextEditingController _searchController = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -221,13 +221,22 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 20),
           const DealOfDay(),
           const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '    See More Deals',
-              style: TextStyle(
-                color: GlobalVariables.selectedNavBarColor,
-                fontWeight: FontWeight.bold,
+          InkWell(
+            onTap: () {
+              for (int i = 0; i < user.cart.length; i++) {
+                print(user.cart[i].product.name);
+                print(user.cart[i].quantity);
+                print('------------------');
+              }
+            },
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '    See More Deals',
+                style: TextStyle(
+                  color: GlobalVariables.selectedNavBarColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:amazon_clone/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/utils.dart';
+import 'package:amazon_clone/features/admin/screens/admin_screen.dart';
+import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -38,11 +40,13 @@ class AuthService {
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
           // ignore: use_build_context_synchronously
-          // Navigator.pushNamedAndRemoveUntil(
-          //   context,
-          //   BottomBar.routeName,
-          //   (route) => false,
-          // );
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            (jsonDecode(res.body)['type'] == 'user')
+                ? BottomBar.routeName
+                : AdminScreen.routeName,
+            (route) => false,
+          );
         },
       );
     } catch (err) {
@@ -113,15 +117,24 @@ class AuthService {
         );
         // ignore: use_build_context_synchronously
         var userProvider = Provider.of<UserProvider>(context, listen: false);
-        // print(userRes.body);
         userProvider.setUser(userRes.body);
-        // print(userRes.body);
         return false;
-        //get user data
       }
     } catch (e) {
       print("err:" + e.toString());
     }
     return false;
+  }
+
+  void logOut(BuildContext context) async {
+    try {
+      SharedPreferences shared_preferences =
+          await SharedPreferences.getInstance();
+      await shared_preferences.setString('x-auth-token', '');
+      Navigator.pushNamedAndRemoveUntil(
+          context, AuthScreen.routeName, (route) => false);
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

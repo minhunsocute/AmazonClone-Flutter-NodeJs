@@ -1,6 +1,7 @@
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/admin/screens/add_product.dart';
 import 'package:amazon_clone/features/auth/services/admin_services.dart';
+import 'package:amazon_clone/features/auth/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/view_item.dart';
@@ -16,6 +17,7 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   List<Product>? products;
   final AdminService adminServices = AdminService();
+  final AuthService authServices = AuthService();
   @override
   void initState() {
     super.initState();
@@ -62,7 +64,6 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                 ),
                 title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
@@ -73,13 +74,18 @@ class _PostScreenState extends State<PostScreen> {
                         color: Colors.black,
                       ),
                     ),
+                    const Spacer(),
                     const Text(
                       'Admin',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
-                    )
+                    ),
+                    InkWell(
+                      onTap: () => authServices.logOut(context),
+                      child: const Icon(Icons.login_outlined),
+                    ),
                   ],
                 ),
               ),

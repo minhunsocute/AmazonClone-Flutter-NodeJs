@@ -30,7 +30,7 @@ class User {
   List<dynamic> cart;
 
   factory User.fromMap(Map<String, dynamic> json) {
-    print(json['cart'][0]['product']['name']);
+    print(json['cart'].length);
     return User(
       name: json["name"],
       email: json["email"],
@@ -39,12 +39,14 @@ class User {
       type: json["type"],
       id: json["_id"],
       token: json["token"],
-      cart: json['cart']
-          .map((e) => Cart.fromMap({
-                'product': Product.fromMap(e['product']),
-                'quantity': e['quantity'],
-              }))
-          .toList(),
+      cart: (json['cart'].isNotEmpty)
+          ? json['cart']
+              .map((e) => Cart.fromMap({
+                    'product': Product.fromMap(e['product']),
+                    'quantity': e['quantity'],
+                  }))
+              .toList()
+          : [],
     );
   }
 

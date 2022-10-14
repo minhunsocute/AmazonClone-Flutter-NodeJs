@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/global_variables.dart';
 import '../../../models/product.dart';
 import '../services/home_services.dart';
+import 'package:get/get.dart';
 
 class DealOfDay extends StatefulWidget {
   const DealOfDay({super.key});
@@ -14,7 +15,14 @@ class DealOfDay extends StatefulWidget {
 
 class _DealOfDayState extends State<DealOfDay> {
   final HomeServices homeServices = HomeServices();
-  Product? product;
+  Rx<Product> product = Product(
+          name: '',
+          description: '',
+          quantity: 1,
+          images: [],
+          category: '',
+          price: 0)
+      .obs;
   @override
   void initState() {
     super.initState();
@@ -22,13 +30,12 @@ class _DealOfDayState extends State<DealOfDay> {
   }
 
   fetchProductDealDay() async {
-    product = await homeServices.fetchProductDayDeal(context);
-    setState(() {});
+    product.value = await homeServices.fetchProductDayDeal(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return product != null
+    return Obx(() => product.value.name != ''
         ? InkWell(
             onTap: () => Navigator.pushNamed(
               context,
@@ -57,7 +64,7 @@ class _DealOfDayState extends State<DealOfDay> {
                       image: DecorationImage(
                         fit: BoxFit.fill,
                         image: NetworkImage(
-                          product!.images[0],
+                          product.value.images[0],
                         ),
                       ),
                       boxShadow: [
@@ -77,7 +84,7 @@ class _DealOfDayState extends State<DealOfDay> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$${product!.price}',
+                            '\$${product.value.price}',
                             style: const TextStyle(
                               color: Color.fromARGB(255, 29, 201, 192),
                               fontWeight: FontWeight.bold,
@@ -88,7 +95,7 @@ class _DealOfDayState extends State<DealOfDay> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.75,
                             child: Text(
-                              product!.name,
+                              product.value.name,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.black,
@@ -136,7 +143,7 @@ class _DealOfDayState extends State<DealOfDay> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: product!.images
+                        children: product.value.images
                             .map(
                               (e) => Container(
                                 height: 100,
@@ -166,6 +173,6 @@ class _DealOfDayState extends State<DealOfDay> {
         : Center(
             child: CircularProgressIndicator(
                 color: GlobalVariables.selectedNavBarColor),
-          );
+          ));
   }
 }

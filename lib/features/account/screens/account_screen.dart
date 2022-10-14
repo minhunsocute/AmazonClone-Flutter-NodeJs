@@ -3,11 +3,18 @@ import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../auth/services/auth_service.dart';
 import '../widgets/account_button.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  final AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
@@ -93,7 +100,7 @@ class AccountScreen extends StatelessWidget {
                 children: [
                   AccountButton(
                     text: 'Log Out',
-                    onTap: () {},
+                    onTap: () => authService.logOut(context),
                   ),
                   AccountButton(
                     text: 'Your Wish List',

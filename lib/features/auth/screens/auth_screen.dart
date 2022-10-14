@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/global_variables.dart';
 import '../services/auth_service.dart';
+import 'package:get/get.dart';
 
 enum Auth {
   sigin,
@@ -26,7 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  bool isLoading = false;
+  RxBool isLoading = false.obs;
   @override
   void initState() {
     super.initState();
@@ -53,17 +54,13 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signInUser() {
-    setState(() {
-      isLoading = true;
-    });
+    isLoading.value = true;
     authService.signInUser(
       context,
       email: _emailController.text,
       password: _passwordController.text,
     );
-    setState(() {
-      isLoading = false;
-    });
+    isLoading.value = false;
   }
 
   @override
@@ -149,7 +146,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               controller: _passwordController,
                               hintText: 'Password'),
                           const SizedBox(height: 10),
-                          (isLoading)
+                          Obx(() => (isLoading.value)
                               ? const Center(
                                   child: CircularProgressIndicator(
                                       color: Colors.blue))
@@ -158,7 +155,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   onTap: () {
                                     signInUser();
                                   },
-                                )
+                                ))
                         ],
                       ),
                     ),
