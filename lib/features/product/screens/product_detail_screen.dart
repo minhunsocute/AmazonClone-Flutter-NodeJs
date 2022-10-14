@@ -1,22 +1,33 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/features/product/services/product_detail_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../models/product.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   static const String routeName = "/product-detail";
   final Product product;
   const ProductDetailScreen({super.key, required this.product});
 
   @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  final ProductDetailServiecs productDetailServices = ProductDetailServiecs();
+  void addToCart() {
+    productDetailServices.addToCart(context: context, product: widget.product);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double rating = (product.rating != null)
-        ? (product.rating!.isNotEmpty)
-            ? product.rating!
+    double rating = (widget.product.rating != null)
+        ? (widget.product.rating!.isNotEmpty)
+            ? widget.product.rating!
                     .fold<double>(0, (double sum, item) => sum + item.rating) /
-                product.rating!.length
+                widget.product.rating!.length
             : 0
         : 0;
     return Scaffold(
@@ -82,7 +93,7 @@ class ProductDetailScreen extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.fill,
                     image: NetworkImage(
-                      product.images[0],
+                      widget.product.images[0],
                     ),
                   ),
                 ),
@@ -93,7 +104,7 @@ class ProductDetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    product.name,
+                    widget.product.name,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: Colors.black,
@@ -117,7 +128,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              '\$${product.price.toString()}',
+              '\$${widget.product.price.toString()}',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: GlobalVariables.selectedNavBarColor,
@@ -172,7 +183,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              product.description,
+              widget.product.description,
               style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 14,
@@ -183,7 +194,7 @@ class ProductDetailScreen extends StatelessWidget {
             const SizedBox(height: 10),
             CustomButton(text: 'Buy Now', onTap: () {}),
             const SizedBox(height: 10),
-            CustomButton(text: 'Add to Cart', onTap: () {}),
+            CustomButton(text: 'Add to Cart', onTap: () => addToCart()),
             const SizedBox(height: 20),
           ],
         ),

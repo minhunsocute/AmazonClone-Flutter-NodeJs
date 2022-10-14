@@ -220,30 +220,18 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           const DealOfDay(),
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '    See More Deals',
+              style: TextStyle(
+                color: GlobalVariables.selectedNavBarColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           const SizedBox(height: 40),
-          // Column(
-          //   children: [
-          //     ...GlobalVariables.listDeal.map(
-          //       (e) => Container(
-          //         margin: const EdgeInsets.symmetric(horizontal: 10),
-          //         height: 300,
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             Image.network(
-          //               e['image'],
-          //               // fit: BoxFit.fill,
-          //               height: 200,
-          //               width: double.infinity,
-          //             ),
-          //             const SizedBox(height: 10),
-
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );

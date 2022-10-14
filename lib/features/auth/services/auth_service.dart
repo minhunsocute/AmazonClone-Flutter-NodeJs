@@ -63,6 +63,7 @@ class AuthService {
         address: '',
         type: '',
         token: '',
+        cart: [],
       );
       http.Response res = await http.post(
         Uri.parse('https://amazon-clone-hung.herokuapp.com/api/signup'),
@@ -110,9 +111,11 @@ class AuthService {
             'x-auth-token': token,
           },
         );
+        // ignore: use_build_context_synchronously
         var userProvider = Provider.of<UserProvider>(context, listen: false);
+        // print(userRes.body);
         userProvider.setUser(userRes.body);
-        print(userRes.body);
+        // print(userRes.body);
         return false;
         //get user data
       }
